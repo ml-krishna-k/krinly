@@ -1,0 +1,315 @@
+@import "tailwindcss";
+
+/* ============================================================================
+   KRINLY DESIGN SYSTEM
+   ----------------------------------------------------------------------------
+   Two type tiers with a deliberate gap (display / body) plus a third micro tier
+   of tracked-out mono labels. No intermediate steps — the absence of a smooth
+   modular ramp is intentional and is what separates this tier from template work.
+
+   Colour is a monochrome warm paper/ink shell. The portfolio work supplies all
+   chroma; the shell must not compete with it. Light/dark inversion marks
+   chapters rather than decorating sections.
+   ========================================================================== */
+
+@theme {
+  /* --- Surfaces -------------------------------------------------------- */
+  /* Warm paper, never pure #fff — pure white reads as unstyled default. */
+  --color-paper: #f4f2ee;
+  --color-paper-2: #eae7e1;
+  --color-paper-3: #ded9d1;
+
+  /* Warm near-black, never pure #000 — pure black crushes on OLED and
+     reads colder than the paper it sits on. */
+  --color-ink: #14120f;
+  --color-ink-2: #232019;
+  --color-ink-3: #3a352c;
+
+  /* Text on paper */
+  --color-fg: #14120f;
+  --color-fg-muted: #5c564a;
+  --color-fg-subtle: #8a8377;
+
+  /* Text on ink */
+  --color-on-ink: #f4f2ee;
+  --color-on-ink-muted: #a49c8d;
+  --color-on-ink-subtle: #6f685c;
+
+  /* Hairlines. Low-contrast rules do a lot of the editorial work. */
+  --color-edge: #cfc9bf;
+  --color-edge-strong: #b3aca0;
+  --color-edge-on-ink: #332e26;
+
+  /* Single accent, reserved for interactive affordance only — never
+     decorative. Burnt vermilion: warm, editorial, and deliberately not
+     the purple/blue that signals SaaS or AI-generated design. */
+  --color-accent: #b5471f;
+  --color-accent-hover: #973814;
+
+  /* --- Type ------------------------------------------------------------ */
+  --font-sans: var(--font-instrument-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, monospace;
+
+  /* Display tier. Fluid, and intentionally far above the body tier.
+     Nothing is allowed to live in the gap between --text-display-sm and
+     --text-body-lg. */
+  /* Tuned down from 11vw/13rem after visual inspection: at desktop widths the
+     hero headline alone consumed the entire first viewport, pushing the
+     supporting line and the primary CTA below the fold. Scale has to earn its
+     size — a headline nobody can read alongside a next step is decoration. */
+  --text-display-xl: clamp(3.5rem, 7.6vw, 8.5rem);
+  --text-display-lg: clamp(3rem, 8vw, 9rem);
+  --text-display-md: clamp(2.5rem, 6vw, 6rem);
+  --text-display-sm: clamp(2rem, 4.5vw, 4rem);
+
+  /* Body tier. Small and set narrow — small text assumes the reader will
+     lean in, which is a confidence signal. 20px/75ch is the fearful default. */
+  --text-body-lg: 1.125rem;
+  --text-body: 1rem;
+  --text-body-sm: 0.9375rem;
+
+  /* Label tier. 10–12px uppercase, positively tracked, mono. */
+  --text-label: 0.75rem;
+  --text-label-sm: 0.6875rem;
+
+  /* Line-height inverts with size: tight display, open body. */
+  --leading-display: 0.88;
+  --leading-display-loose: 0.95;
+  --leading-body: 1.55;
+  --leading-label: 1.2;
+
+  /* Optical tracking: negative on display, zero on body, strongly
+     positive on labels. */
+  --tracking-display: -0.035em;
+  --tracking-display-tight: -0.045em;
+  --tracking-body: 0em;
+  --tracking-label: 0.12em;
+
+  /* --- Measure --------------------------------------------------------- */
+  --measure: 58ch;
+  --measure-narrow: 44ch;
+
+  /* --- Section rhythm --------------------------------------------------
+     Sections snap to large units; spacing *within* a section is free.
+     This is what makes scrolling feel like turning pages. */
+  --space-section: clamp(6rem, 14vh, 12rem);
+  --space-section-lg: clamp(9rem, 22vh, 20rem);
+
+  /* --- Motion ----------------------------------------------------------
+     Two duration bands only. Micro-interactions and compositional moves.
+     Nothing lives between them, nothing exceeds ~1.2s. */
+  --duration-micro: 200ms;
+  --duration-micro-slow: 300ms;
+  --duration-move: 700ms;
+  --duration-move-slow: 1100ms;
+
+  /* Entrances decelerate hard; exits run ~0.6x. Never `ease`, never spring
+     bounce on layout — bounce reads as template. */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out-quart: cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+/* ============================================================================
+   BASE
+   ========================================================================== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  /* Smooth scroll is handled in JS (tuned, not library-default) so that it
+     can be disabled wholesale under reduced-motion. */
+}
+
+body {
+  background: var(--color-paper);
+  color: var(--color-fg);
+  font-family: var(--font-sans);
+  font-size: var(--text-body);
+  line-height: var(--leading-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-synthesis-weight: none;
+  text-rendering: optimizeLegibility;
+  /* Guard against the horizontal overflow that full-bleed and off-grid
+     elements otherwise introduce on small viewports. */
+  overflow-x: clip;
+}
+
+/* Headings inherit the display tier explicitly rather than relying on
+   browser defaults, so scale is never accidental. */
+h1,
+h2,
+h3,
+h4 {
+  font-weight: 500;
+  letter-spacing: var(--tracking-display);
+  line-height: var(--leading-display);
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+/* ============================================================================
+   TYPOGRAPHIC PRIMITIVES
+   ========================================================================== */
+
+.u-display-xl {
+  font-size: var(--text-display-xl);
+  line-height: var(--leading-display);
+  letter-spacing: var(--tracking-display-tight);
+  font-weight: 500;
+}
+
+.u-display-lg {
+  font-size: var(--text-display-lg);
+  line-height: var(--leading-display);
+  letter-spacing: var(--tracking-display-tight);
+  font-weight: 500;
+}
+
+.u-display-md {
+  font-size: var(--text-display-md);
+  line-height: var(--leading-display-loose);
+  letter-spacing: var(--tracking-display);
+  font-weight: 500;
+}
+
+.u-display-sm {
+  font-size: var(--text-display-sm);
+  line-height: var(--leading-display-loose);
+  letter-spacing: var(--tracking-display);
+  font-weight: 500;
+}
+
+/* The label tier carries a disproportionate amount of the "expensive"
+   signal — it is the gallery wall card next to the artwork. */
+.u-label {
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  line-height: var(--leading-label);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  font-weight: 400;
+}
+
+.u-label-sm {
+  font-family: var(--font-mono);
+  font-size: var(--text-label-sm);
+  line-height: var(--leading-label);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  font-weight: 400;
+}
+
+.u-measure {
+  max-width: var(--measure);
+}
+
+.u-measure-narrow {
+  max-width: var(--measure-narrow);
+}
+
+/* ============================================================================
+   ACCESSIBILITY
+   ========================================================================== */
+
+/* Visible, high-contrast focus. Never `outline: none` without replacement. */
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+  border-radius: 1px;
+}
+
+.u-skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 999;
+  padding: 0.75rem 1.25rem;
+  background: var(--color-ink);
+  color: var(--color-on-ink);
+}
+
+.u-skip-link:focus {
+  left: 0;
+}
+
+.u-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Motion is an enhancement, never a dependency. The static composition must
+   stand on its own — see the "remove the animation" test. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  /* Reveal-on-scroll elements must be visible immediately, not stuck at
+     their pre-animation opacity. */
+  [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+    clip-path: none !important;
+  }
+}
+
+/* ============================================================================
+   REVEAL
+   ----------------------------------------------------------------------------
+   Images are masked in, not faded in — a clip-path reveal under a scale-down
+   reads as authored, where an opacity fade reads as a default. Reveals fire
+   once and never re-trigger on scroll-back.
+   ========================================================================== */
+
+/* The pre-reveal hidden state is scoped to `.js`, which is set by an inline
+   script before first paint. Without JavaScript — or if the bundle fails, is
+   blocked, or is still loading — every element renders visible and static.
+   Content must never depend on script execution to be readable; an animation
+   that does not run is a non-event, whereas a permanently invisible case-study
+   image is a broken page. */
+.js [data-reveal] {
+  opacity: 0;
+  transform: translateY(1.25rem);
+  transition:
+    opacity var(--duration-move) var(--ease-out-expo),
+    transform var(--duration-move) var(--ease-out-expo);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+.js [data-reveal="mask"] {
+  opacity: 1;
+  transform: none;
+  clip-path: inset(100% 0 0 0);
+  transition: clip-path var(--duration-move-slow) var(--ease-out-expo);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+[data-reveal].is-revealed {
+  opacity: 1;
+  transform: none;
+}
+
+[data-reveal="mask"].is-revealed {
+  clip-path: inset(0 0 0 0);
+}
