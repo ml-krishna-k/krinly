@@ -5,21 +5,45 @@ import { useEffect, useState } from "react";
 import { business } from "@/data/business";
 
 /**
- * Four items, one of which is a verb. No "Home" — its presence in a nav is a
- * reliable marker of the template tier, and the logo already does that job.
- * No sticky "Get a quote" pill.
+ * Institutional navigation. Two program tracks (Schools, Colleges) sit beside
+ * the flagship Innovation Labs concept and the business-facing Technology page.
+ * No "Home" item, the wordmark does that job, and "Home" in a nav is a
+ * template tell the premium references (Apple, Linear, Stripe) all avoid.
  *
- * Behaviour: recessive at rest, direction-aware after the first screen. It
- * hides on downward scroll past the fold and returns immediately on any upward
- * scroll, so the primary action is always one gesture away without occupying
- * the viewport while reading.
+ * The single verb is the CTA: every path is meant to end in a meeting request.
+ *
+ * Behaviour: recessive at rest, direction-aware after the first screen, hides
+ * on downward scroll past the fold, returns immediately on any upward scroll.
  */
 
 const LINKS = [
-  { href: "/#work", label: "Work" },
-  { href: "/#studio", label: "Studio" },
-  { href: "/#contact", label: "Contact" },
+  { href: "/innovation-labs", label: "Innovation Labs" },
+  { href: "/schools", label: "Schools" },
+  { href: "/colleges", label: "Colleges" },
+  { href: "/technology", label: "Technology" },
+  { href: "/about", label: "About" },
 ];
+
+/** The wordmark lockup, reused in the header and the mobile overlay. */
+function Wordmark({ onDark = false }: { onDark?: boolean }) {
+  return (
+    <span className="inline-flex items-baseline gap-2">
+      <span
+        className={`text-[0.95rem] font-semibold tracking-[-0.01em] ${
+          onDark ? "text-on-ink" : "text-fg"
+        }`}
+      >
+        {business.shortName}
+        <span className="text-accent">.</span>
+      </span>
+      <span
+        className={`u-label-sm ${onDark ? "text-on-ink-subtle" : "text-fg-subtle"}`}
+      >
+        Technologies
+      </span>
+    </span>
+  );
+}
 
 export function Nav() {
   const [hidden, setHidden] = useState(false);
@@ -35,7 +59,6 @@ export function Nav() {
       frame = requestAnimationFrame(() => {
         const y = window.scrollY;
         setScrolled(y > 24);
-        // Threshold prevents the nav flickering on small scroll jitter.
         if (Math.abs(y - lastY) > 8) {
           setHidden(y > lastY && y > 320);
           lastY = y;
@@ -51,7 +74,6 @@ export function Nav() {
     };
   }, []);
 
-  // Lock scroll behind the mobile overlay.
   useEffect(() => {
     document.body.style.overflow = menuOpen ? "hidden" : "";
     return () => {
@@ -59,7 +81,6 @@ export function Nav() {
     };
   }, [menuOpen]);
 
-  // Escape closes the overlay — expected of any modal surface.
   useEffect(() => {
     if (!menuOpen) return;
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && setMenuOpen(false);
@@ -85,13 +106,13 @@ export function Nav() {
         >
           <Link
             href="/"
-            className="u-label !text-[0.8125rem] !tracking-[0.2em] font-medium hover:text-accent transition-colors duration-[var(--duration-micro)]"
+            onClick={() => setMenuOpen(false)}
+            className="hover:opacity-70 transition-opacity duration-[var(--duration-micro)]"
           >
-            {business.name}
-            <span className="text-accent">.</span>
+            <Wordmark onDark={menuOpen} />
           </Link>
 
-          <div className="hidden md:flex items-center gap-10">
+          <div className="hidden lg:flex items-center gap-8">
             {LINKS.map((l) => (
               <Link
                 key={l.href}
@@ -102,10 +123,10 @@ export function Nav() {
               </Link>
             ))}
             <Link
-              href="/#contact"
-              className="u-label border border-fg px-4 py-2.5 hover:bg-ink hover:text-on-ink hover:border-ink transition-colors duration-[var(--duration-micro)]"
+              href="/contact"
+              className="u-label bg-ink text-on-ink px-5 py-2.5 hover:bg-accent transition-colors duration-[var(--duration-micro)]"
             >
-              Start a project
+              Request a meeting
             </Link>
           </div>
 
@@ -114,28 +135,29 @@ export function Nav() {
             onClick={() => setMenuOpen((v) => !v)}
             aria-expanded={menuOpen}
             aria-controls="mobile-menu"
-            className="md:hidden u-label py-2 -mr-2 px-2"
+            className={[
+              "lg:hidden u-label py-2 -mr-2 px-2 transition-colors duration-[var(--duration-micro)]",
+              menuOpen ? "text-on-ink" : "text-fg",
+            ].join(" ")}
           >
             {menuOpen ? "Close" : "Menu"}
           </button>
         </nav>
       </header>
 
-      {/* Overlay menu — a designed surface, not a dropdown. Large type,
-          immediate access to work and contact, no entrance delay that makes
-          navigation feel slow. */}
+      {/* Overlay menu, a designed surface, not a dropdown. */}
       <div
         id="mobile-menu"
         hidden={!menuOpen}
-        className="fixed inset-0 z-40 bg-ink text-on-ink md:hidden flex flex-col justify-between px-6 pt-24 pb-10"
+        className="fixed inset-0 z-40 bg-ink text-on-ink lg:hidden flex flex-col justify-between px-6 pt-24 pb-10 overflow-y-auto"
       >
-        <ul className="space-y-2">
+        <ul className="space-y-1">
           {LINKS.map((l) => (
             <li key={l.href}>
               <Link
                 href={l.href}
                 onClick={() => setMenuOpen(false)}
-                className="u-display-sm block py-2"
+                className="u-display-sm !text-[1.75rem] block py-2"
               >
                 {l.label}
               </Link>
@@ -143,13 +165,13 @@ export function Nav() {
           ))}
         </ul>
 
-        <div className="space-y-5">
+        <div className="space-y-5 pt-8">
           <Link
-            href="/#contact"
+            href="/contact"
             onClick={() => setMenuOpen(false)}
-            className="u-label block border border-on-ink-subtle px-5 py-4 text-center"
+            className="u-label block bg-paper text-ink px-5 py-4 text-center"
           >
-            Start a project
+            Request a meeting
           </Link>
           <div className="flex flex-col gap-1">
             <a

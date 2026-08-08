@@ -17,10 +17,13 @@ const BASE = process.env.BASE_URL || "http://localhost:3100";
 const OUT = process.argv[2] || path.join(process.cwd(), ".inspect");
 
 const SHOTS = [
-  { page: "/", kind: "desktop", positions: [0, 1, 2, 3.2, 5, 6.4, 8] },
-  { page: "/", kind: "mobile", positions: [0, 1, 2, 3, 4] },
-  { page: "/work/bowled", kind: "desktop", positions: [0, 1, 2.2, 3.6] },
-  { page: "/work/ravis-fit", kind: "mobile", positions: [0, 1.2] },
+  { page: "/", kind: "desktop", positions: [0, 1, 2, 3, 4, 5, 6, 7, 8] },
+  { page: "/", kind: "mobile", positions: [0, 1, 2] },
+  { page: "/schools", kind: "desktop", positions: [0, 1, 2.4] },
+  { page: "/innovation-labs", kind: "desktop", positions: [0, 1] },
+  { page: "/technology", kind: "desktop", positions: [0, 1] },
+  { page: "/contact", kind: "desktop", positions: [0, 1] },
+  { page: "/about", kind: "mobile", positions: [0] },
 ];
 
 const VIEWPORTS = {
@@ -60,7 +63,7 @@ for (const shot of SHOTS) {
     // Let reveals fire and fully settle — the mask transition alone runs
     // 1100ms, so a shorter wait catches elements mid-reveal and misreports
     // them as layout defects.
-    await page.waitForTimeout(1800);
+    await page.waitForTimeout(2600);
     const png = await page.screenshot({ type: "png" });
     await sharp(png)
       .resize({ width: vp.width, withoutEnlargement: true })

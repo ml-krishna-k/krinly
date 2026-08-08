@@ -5,7 +5,7 @@ const SITE_URL = "https://krinly.com";
 
 /**
  * Currently disallows everything: the site is not on its final domain and the
- * layout still sets `robots: noindex`. Flip both together at launch — leaving
+ * layout still sets `robots: noindex`. Flip both together at launch, leaving
  * one of the two set is the usual way a site ends up quietly unindexed.
  */
 export default function robots(): MetadataRoute.Robots {

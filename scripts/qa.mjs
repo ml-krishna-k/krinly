@@ -2,7 +2,17 @@ import { chromium } from "playwright";
 
 const BASE = "http://localhost:3100";
 const WIDTHS = [320, 360, 375, 390, 430, 768, 1024, 1280, 1440, 1920];
-const PAGES = ["/", "/work/bowled", "/work/ravis-fit"];
+const PAGES = [
+  "/",
+  "/innovation-labs",
+  "/schools",
+  "/colleges",
+  "/technology",
+  "/work",
+  "/work/codekrack",
+  "/about",
+  "/contact",
+];
 
 const b = await chromium.launch();
 let fails = 0;

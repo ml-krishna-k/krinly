@@ -16,7 +16,7 @@ export const revealBootstrap = `document.documentElement.classList.add("js")`;
 /**
  * Scroll reveal, applied once and never re-triggered.
  *
- * Re-animating on scroll-back is the most common amateur tell — it makes a site
+ * Re-animating on scroll-back is the most common amateur tell, it makes a site
  * feel like a demo. The observer unobserves each element the moment it fires.
  *
  * A single document-level effect rather than a wrapper component per element:
@@ -59,7 +59,7 @@ export function RevealProvider() {
       // synchronously rather than waiting on the observer. Two reasons:
       //
       //   1. Elements scrolled past will never intersect again, so the observer
-      //      would never fire and they would stay hidden forever — which is
+      //      would never fire and they would stay hidden forever, which is
       //      what happens on hash deep links, restored scroll positions and
       //      back-navigation.
       //   2. The observer's first callback is only delivered on the next

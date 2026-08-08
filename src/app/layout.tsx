@@ -7,7 +7,7 @@ import { RevealProvider, revealBootstrap } from "@/components/Reveal";
 import { business } from "@/data/business";
 
 /**
- * One grotesque, one mono, no third face — the discipline is itself the signal.
+ * One grotesque, one mono, no third face, the discipline is itself the signal.
  *
  * Instrument Sans is a variable neo-grotesque that is not yet template-worn.
  * Inter, Poppins and Satoshi are the three faces that most reliably mark a site
@@ -33,28 +33,29 @@ const plexMono = IBM_Plex_Mono({
 /** TODO: replace with the live domain once it is registered. */
 const SITE_URL = "https://krinly.com";
 
+const TITLE = "Krinly Technologies, Innovation & technology for institutions";
+const DESC =
+  "Krinly Technologies is an education and technology company. Innovation labs and industry programs for schools and colleges, and the digital products, web, AI, automation, that back them.";
+
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Krinly — Digital studio. Strategy, design and engineering.",
-    template: "%s — Krinly",
+    default: TITLE,
+    template: "%s, Krinly Technologies",
   },
-  description:
-    "Krinly is a founder-led digital studio. Websites and digital products for businesses that have outgrown the way they look online. Based in India, working internationally.",
+  description: DESC,
   openGraph: {
     type: "website",
     siteName: business.name,
-    title: "Krinly — Digital studio. Strategy, design and engineering.",
-    description:
-      "Websites and digital products for businesses that have outgrown the way they look online.",
+    title: TITLE,
+    description: DESC,
     url: SITE_URL,
     locale: "en",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Krinly — Digital studio.",
-    description:
-      "Websites and digital products for businesses that have outgrown the way they look online.",
+    title: TITLE,
+    description: DESC,
   },
   alternates: { canonical: "/" },
   // TODO: remove once the domain is live and the site is ready to be indexed.
@@ -62,27 +63,38 @@ export const metadata: Metadata = {
 };
 
 /**
- * Organization schema. Only truthful fields: no employee count, no founding
- * date, no aggregate rating, no awards. An unsubstantiated aggregateRating is
- * both a credibility risk and something Google actively penalises.
+ * Organization schema. Typed as both an educational organisation and a
+ * professional service, reflecting the two halves of the company. Only truthful
+ * fields, no employee count, no founding date, no rating, no awards, and no
+ * MSME identifier until a real Udyam number is supplied.
  */
 const schema = {
   "@context": "https://schema.org",
-  "@type": "ProfessionalService",
+  "@type": ["EducationalOrganization", "ProfessionalService"],
   name: business.name,
+  alternateName: business.shortName,
   description:
-    "Founder-led digital studio providing strategy, web design, front-end engineering and digital product development.",
+    "Education and technology company providing innovation labs and industry programs for schools and colleges, plus web, AI, automation and custom software for businesses.",
   url: SITE_URL,
   email: business.contact.email,
   telephone: business.contact.phone,
   founder: { "@type": "Person", name: business.founder },
+  knowsAbout: [
+    "Innovation labs",
+    "Engineering education",
+    "AI engineering",
+    "Full-stack development",
+    "Embedded systems",
+    "Business automation",
+    "Web applications",
+  ],
   address: {
     "@type": "PostalAddress",
     addressLocality: business.location.city,
     addressRegion: business.location.region,
     addressCountry: "IN",
   },
-  areaServed: "Worldwide",
+  areaServed: "IN",
 };
 
 export default function RootLayout({

@@ -1,7 +1,7 @@
 /**
  * A capability model, not a service catalogue.
  *
- * Four groups, not twelve cards. Research is unambiguous that a list of 8–10
+ * Four groups, not twelve cards. Research is unambiguous that a list of 8, 10
  * undifferentiated services ("Design, Branding, SEO, Copywriting, Motion…")
  * claims total coverage and therefore claims nothing. Each group below is
  * something the portfolio can actually evidence.
@@ -20,7 +20,7 @@ export const capabilities: Capability[] = [
     index: "01",
     title: "Strategy",
     summary:
-      "Deciding what the site needs to do before deciding what it looks like — who it speaks to, in what order, and what a visit is supposed to end in.",
+      "Deciding what the site needs to do before deciding what it looks like, who it speaks to, in what order, and what a visit is supposed to end in.",
     items: [
       "Positioning and messaging",
       "Information architecture",
@@ -32,7 +32,7 @@ export const capabilities: Capability[] = [
     index: "02",
     title: "Design",
     summary:
-      "Art direction that matches the business rather than the category default — a specialist practice should not look like a walk-in clinic.",
+      "Art direction that matches the business rather than the category default, a specialist practice should not look like a walk-in clinic.",
     items: [
       "Art direction",
       "Interface and interaction design",

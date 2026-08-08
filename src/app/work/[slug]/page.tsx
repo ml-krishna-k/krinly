@@ -18,10 +18,10 @@ export async function generateMetadata({
   if (!project) return {};
 
   return {
-    title: `${project.name} — ${project.kindLabel}`,
+    title: `${project.name}, ${project.kindLabel}`,
     description: project.scope,
     openGraph: {
-      title: `${project.name} — Krinly`,
+      title: `${project.name}, Krinly`,
       description: project.scope,
       images: [{ url: project.images.desktop }],
     },
@@ -46,7 +46,7 @@ export default async function CaseStudy({
       {/* ================= Title block ================= */}
       <section className="px-6 md:px-10 lg:px-16 pt-32 md:pt-44 pb-14 md:pb-20">
         <Link
-          href="/#work"
+          href="/work"
           className="u-label text-fg-subtle hover:text-fg transition-colors duration-[var(--duration-micro)]"
         >
           ← All work
@@ -82,7 +82,7 @@ export default async function CaseStudy({
       {/* ================= Facts =================
           Attribution sits high on the page, not buried at the bottom. If a
           project is a concept study, a reader learns that before they read the
-          narrative — which is the only way the narrative stays credible. */}
+          narrative, which is the only way the narrative stays credible. */}
       <section className="px-6 md:px-10 lg:px-16 pt-14 md:pt-20">
         <dl className="grid grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-10 border-t border-edge pt-8">
           <div>
@@ -161,7 +161,7 @@ export default async function CaseStudy({
             <Image
               data-reveal="mask"
               src={project.images.mobile}
-              alt={`${project.name} — mobile view`}
+              alt={`${project.name}, mobile view`}
               width={780}
               height={1688}
               sizes="(max-width: 1024px) 60vw, 24vw"

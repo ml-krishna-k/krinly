@@ -7,7 +7,7 @@ import type { Project } from "@/data/projects";
  *
  * Deliberately not a three-up card grid. Each project is a full editorial row
  * whose image side alternates, so the eye crosses the page rather than scanning
- * a column — and so no two projects read as the same object type.
+ * a column, and so no two projects read as the same object type.
  *
  * Screenshots are shown as clean rectangles: no border radius, no drop shadow,
  * no browser chrome. The `radius + shadow + fake Safari toolbar` treatment is
@@ -33,7 +33,7 @@ export function WorkCard({
           always leads, because the picture is the reason to keep scrolling. */}
       <Link
         href={`/work/${project.slug}`}
-        aria-label={`${project.name} — case study`}
+        aria-label={`${project.name}, case study`}
         className={[
           "group relative block overflow-hidden bg-paper-2",
           // Full-bleed on mobile: the negative margin exactly cancels the
@@ -54,7 +54,7 @@ export function WorkCard({
           sizes="(max-width: 1024px) 100vw, 58vw"
           className="w-full h-auto transition-transform duration-[var(--duration-move-slow)] ease-[var(--ease-out-expo)] group-hover:scale-[1.02]"
         />
-        {/* Hover affordance appears over the media only — not a cursor that
+        {/* Hover affordance appears over the media only, not a cursor that
             follows the whole page. */}
         <span
           aria-hidden

@@ -1,50 +1,55 @@
 @import "tailwindcss";
 
 /* ============================================================================
-   KRINLY DESIGN SYSTEM
+   KRINLY TECHNOLOGIES, DESIGN SYSTEM
    ----------------------------------------------------------------------------
-   Two type tiers with a deliberate gap (display / body) plus a third micro tier
-   of tracked-out mono labels. No intermediate steps — the absence of a smooth
-   modular ramp is intentional and is what separates this tier from template work.
+   Education & Technology company. The register is engineering-precise: cool
+   graphite and paper, a single controlled cobalt for interactive intent, and a
+   fine technical-grid motif that reads as blueprint / instrumentation rather
+   than decoration. This is the visual argument for "engineering excellence", 
+   it must look measured and built, not marketed.
 
-   Colour is a monochrome warm paper/ink shell. The portfolio work supplies all
-   chroma; the shell must not compete with it. Light/dark inversion marks
-   chapters rather than decorating sections.
+   Two type tiers with a deliberate gap (display / body) plus a third micro tier
+   of tracked-out mono labels, the mono tier doubles as engineering annotation.
+   Light/dark inversion marks chapters rather than decorating sections.
    ========================================================================== */
 
 @theme {
   /* --- Surfaces -------------------------------------------------------- */
-  /* Warm paper, never pure #fff — pure white reads as unstyled default. */
-  --color-paper: #f4f2ee;
-  --color-paper-2: #eae7e1;
-  --color-paper-3: #ded9d1;
+  /* Cool paper, never pure #fff, a faint blue-grey undertone reads as
+     architectural drafting stock rather than default white. */
+  --color-paper: #f3f4f6;
+  --color-paper-2: #e7e9ee;
+  --color-paper-3: #d7dbe2;
 
-  /* Warm near-black, never pure #000 — pure black crushes on OLED and
-     reads colder than the paper it sits on. */
-  --color-ink: #14120f;
-  --color-ink-2: #232019;
-  --color-ink-3: #3a352c;
+  /* Cool graphite, never pure #000, a blue-black that pairs with the paper
+     as ink on a technical drawing and holds depth on OLED. */
+  --color-ink: #0d1013;
+  --color-ink-2: #161b22;
+  --color-ink-3: #2a313c;
 
   /* Text on paper */
-  --color-fg: #14120f;
-  --color-fg-muted: #5c564a;
-  --color-fg-subtle: #8a8377;
+  --color-fg: #0d1013;
+  --color-fg-muted: #4c5563;
+  --color-fg-subtle: #7d8695;
 
   /* Text on ink */
-  --color-on-ink: #f4f2ee;
-  --color-on-ink-muted: #a49c8d;
-  --color-on-ink-subtle: #6f685c;
+  --color-on-ink: #f3f4f6;
+  --color-on-ink-muted: #9aa3b2;
+  --color-on-ink-subtle: #5c6675;
 
-  /* Hairlines. Low-contrast rules do a lot of the editorial work. */
-  --color-edge: #cfc9bf;
-  --color-edge-strong: #b3aca0;
-  --color-edge-on-ink: #332e26;
+  /* Hairlines. Fine cool rules carry the blueprint feel. */
+  --color-edge: #d2d6de;
+  --color-edge-strong: #b2b8c3;
+  --color-edge-on-ink: #222932;
 
-  /* Single accent, reserved for interactive affordance only — never
-     decorative. Burnt vermilion: warm, editorial, and deliberately not
-     the purple/blue that signals SaaS or AI-generated design. */
-  --color-accent: #b5471f;
-  --color-accent-hover: #973814;
+  /* Single accent, reserved for interactive affordance and precise emphasis, 
+     never a decorative wash. A deep controlled cobalt: institutional trust and
+     engineering, deliberately not the neon indigo/violet that signals SaaS. */
+  --color-accent: #2249d6;
+  --color-accent-hover: #1a37a6;
+  /* Very low-opacity accent for technical grid lines and blueprint fills. */
+  --color-grid: color-mix(in srgb, var(--color-accent) 9%, transparent);
 
   /* --- Type ------------------------------------------------------------ */
   --font-sans: var(--font-instrument-sans), ui-sans-serif, system-ui, sans-serif;
@@ -56,19 +61,19 @@
   /* Tuned down from 11vw/13rem after visual inspection: at desktop widths the
      hero headline alone consumed the entire first viewport, pushing the
      supporting line and the primary CTA below the fold. Scale has to earn its
-     size — a headline nobody can read alongside a next step is decoration. */
+     size, a headline nobody can read alongside a next step is decoration. */
   --text-display-xl: clamp(3.5rem, 7.6vw, 8.5rem);
   --text-display-lg: clamp(3rem, 8vw, 9rem);
   --text-display-md: clamp(2.5rem, 6vw, 6rem);
   --text-display-sm: clamp(2rem, 4.5vw, 4rem);
 
-  /* Body tier. Small and set narrow — small text assumes the reader will
+  /* Body tier. Small and set narrow, small text assumes the reader will
      lean in, which is a confidence signal. 20px/75ch is the fearful default. */
   --text-body-lg: 1.125rem;
   --text-body: 1rem;
   --text-body-sm: 0.9375rem;
 
-  /* Label tier. 10–12px uppercase, positively tracked, mono. */
+  /* Label tier. 10, 12px uppercase, positively tracked, mono. */
   --text-label: 0.75rem;
   --text-label-sm: 0.6875rem;
 
@@ -104,7 +109,7 @@
   --duration-move-slow: 1100ms;
 
   /* Entrances decelerate hard; exits run ~0.6x. Never `ease`, never spring
-     bounce on layout — bounce reads as template. */
+     bounce on layout, bounce reads as template. */
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-in-out-quart: cubic-bezier(0.65, 0, 0.35, 1);
 }
@@ -189,7 +194,7 @@ p {
 }
 
 /* The label tier carries a disproportionate amount of the "expensive"
-   signal — it is the gallery wall card next to the artwork. */
+   signal, it is the gallery wall card next to the artwork. */
 .u-label {
   font-family: var(--font-mono);
   font-size: var(--text-label);
@@ -214,6 +219,179 @@ p {
 
 .u-measure-narrow {
   max-width: var(--measure-narrow);
+}
+
+/* ============================================================================
+   ENGINEERING PRIMITIVES
+   ----------------------------------------------------------------------------
+   The blueprint texture. These carry the "engineering / instrumentation"
+   register without a single stock image, the grid is drawn, not photographed,
+   and it is faint enough to sit under content rather than compete with it.
+   ========================================================================== */
+
+/* Fine technical grid, blueprint-style. Drawn on a pseudo-element behind the
+   content so that a fade mask can be applied to the GRID alone. Masking the
+   element itself would mask its content too (this bit us once already: the
+   hero's lower copy faded out with the grid). */
+.u-grid {
+  position: relative;
+}
+.u-grid::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    linear-gradient(to right, var(--color-grid) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--color-grid) 1px, transparent 1px);
+  background-size: 3.5rem 3.5rem;
+}
+
+/* On ink surfaces the grid lines must be light rather than cobalt-on-black. */
+.u-grid-on-ink {
+  background-image:
+    linear-gradient(to right, rgba(243, 244, 246, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(243, 244, 246, 0.05) 1px, transparent 1px);
+  background-size: 3.5rem 3.5rem;
+}
+
+/* A spec annotation: mono index + rule, as on an engineering drawing. Used to
+   number sections and steps so the page reads as a documented system. */
+.u-spec {
+  font-family: var(--font-mono);
+  font-size: var(--text-label-sm);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+/* Crosshair tick, a small plus mark at grid intersections, drawn with
+   pseudo-elements. Marks a point of emphasis the way a drawing marks a datum. */
+.u-tick {
+  position: relative;
+}
+.u-tick::before,
+.u-tick::after {
+  content: "";
+  position: absolute;
+  background: var(--color-accent);
+}
+.u-tick::before {
+  left: -3px;
+  top: 50%;
+  width: 7px;
+  height: 1px;
+  transform: translateY(-50%);
+}
+.u-tick::after {
+  top: -3px;
+  left: 50%;
+  width: 1px;
+  height: 7px;
+  transform: translateX(-50%);
+}
+
+/* Grid that fades toward the bottom, so the blueprint texture frames the top of
+   a section without flattening into wallpaper. The mask is applied to the grid
+   pseudo-element only — never the content. */
+.u-grid-fade::before {
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 35%, transparent 92%);
+  mask-image: linear-gradient(to bottom, #000 0%, #000 35%, transparent 92%);
+}
+
+/* ============================================================================
+   MOTION & INTERACTION
+   ----------------------------------------------------------------------------
+   The craft layer. Diagrams draw themselves in like an instrument plotting a
+   trace; interactive surfaces answer with a precise accent sweep rather than a
+   generic colour change. All of it is gated on no-preference so reduced-motion
+   users get the finished, static state.
+   ========================================================================== */
+
+@keyframes k-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes k-pop {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  /* Diagram draw-in. Lines carry pathLength="1", so a single normalised dash
+     lets the same rule animate strokes of any real length. Triggered when the
+     diagram's reveal wrapper enters the viewport. */
+  .js [data-reveal] .d-draw {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+  }
+  .js [data-reveal] .d-pop {
+    opacity: 0;
+  }
+  [data-reveal].is-revealed .d-draw {
+    animation: k-draw 1000ms var(--ease-out-expo) forwards;
+    animation-delay: var(--d, 0ms);
+  }
+  [data-reveal].is-revealed .d-pop {
+    animation: k-pop 520ms var(--ease-out-expo) both;
+    animation-delay: var(--d, 0ms);
+  }
+}
+
+/* Accent sweep: a 2px cobalt rule that wipes in from the left on hover/focus of
+   a parent marked `group`. Reads as a precise instrument response, not a
+   template hover. */
+.u-sweep {
+  position: relative;
+}
+.u-sweep::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  height: 2px;
+  width: 100%;
+  background: var(--color-accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--duration-micro-slow) var(--ease-out-expo);
+}
+.group:hover .u-sweep::after,
+.group:focus-visible .u-sweep::after {
+  transform: scaleX(1);
+}
+
+/* A corner bracket pair, drawn at the top-left and bottom-right of a framed
+   element — the register mark of a technical drawing. */
+.u-bracket {
+  position: relative;
+}
+.u-bracket::before,
+.u-bracket::after {
+  content: "";
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border-color: var(--color-accent);
+}
+.u-bracket::before {
+  top: 0;
+  left: 0;
+  border-top: 1.5px solid;
+  border-left: 1.5px solid;
+}
+.u-bracket::after {
+  bottom: 0;
+  right: 0;
+  border-bottom: 1.5px solid;
+  border-right: 1.5px solid;
 }
 
 /* ============================================================================
@@ -254,7 +432,7 @@ p {
 }
 
 /* Motion is an enhancement, never a dependency. The static composition must
-   stand on its own — see the "remove the animation" test. */
+   stand on its own, see the "remove the animation" test. */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -277,14 +455,14 @@ p {
 /* ============================================================================
    REVEAL
    ----------------------------------------------------------------------------
-   Images are masked in, not faded in — a clip-path reveal under a scale-down
+   Images are masked in, not faded in, a clip-path reveal under a scale-down
    reads as authored, where an opacity fade reads as a default. Reveals fire
    once and never re-trigger on scroll-back.
    ========================================================================== */
 
 /* The pre-reveal hidden state is scoped to `.js`, which is set by an inline
-   script before first paint. Without JavaScript — or if the bundle fails, is
-   blocked, or is still loading — every element renders visible and static.
+   script before first paint. Without JavaScript, or if the bundle fails, is
+   blocked, or is still loading, every element renders visible and static.
    Content must never depend on script execution to be readable; an animation
    that does not run is a non-event, whereas a permanently invisible case-study
    image is a broken page. */
