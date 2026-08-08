@@ -51,11 +51,13 @@ export const metadata: Metadata = {
     description: DESC,
     url: SITE_URL,
     locale: "en",
+    images: [{ url: "/og.png", width: 1200, height: 630, alt: business.name }],
   },
   twitter: {
     card: "summary_large_image",
     title: TITLE,
     description: DESC,
+    images: ["/og.png"],
   },
   alternates: { canonical: "/" },
   // TODO: remove once the domain is live and the site is ready to be indexed.
@@ -103,6 +105,11 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      // The reveal bootstrap adds a `js` class to <html> before hydration
+      // (progressive enhancement). That is an intentional pre-hydration change,
+      // so suppress the attribute-mismatch warning on this element only — it
+      // does not affect children.
+      suppressHydrationWarning
       className={`${instrumentSans.variable} ${plexMono.variable} h-full`}
     >
       <body className="min-h-full flex flex-col">

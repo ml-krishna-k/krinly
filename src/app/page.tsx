@@ -5,6 +5,7 @@ import { solutions, process } from "@/data/solutions";
 import { business } from "@/data/business";
 import { WorkCard } from "@/components/WorkIndex";
 import { LabSchematic } from "@/components/Diagram";
+import { VideoHero } from "@/components/VideoHero";
 
 /**
  * Homepage, a persuasive sequence for an institutional decision-maker.
@@ -45,66 +46,61 @@ export default function Home() {
   return (
     <main id="main" className="flex-1">
       {/* ==================================================================
-          HERO, the positioning line is the claim. Blueprint grid behind it.
+          HERO, cinematic video background (hero.mp4). Content sits on a dark
+          overlay in light type; the positioning line is the claim.
           ================================================================== */}
-      <section className="relative u-grid u-grid-fade overflow-hidden">
-        <div className="px-6 md:px-10 lg:px-16 pt-28 md:pt-36 pb-16 md:pb-20">
-          <p className="u-spec mb-10 md:mb-12 h-enter">
-            Education &amp; technology company
-          </p>
+      <VideoHero
+        poster="/hero-poster.webp"
+        webm="/hero.webm"
+        mp4="/hero.mp4"
+        className="min-h-[86vh] flex items-center"
+      >
+        <p className="u-spec !text-accent-bright mb-10 md:mb-12">
+          Education &amp; technology company
+        </p>
 
-          <h1 className="u-display-xl max-w-[17ch] h-mask" style={{ ["--d" as string]: "120ms" }}>
-            Transforming schools, colleges &amp; businesses through innovation.
-          </h1>
+        <h1 className="u-display-xl max-w-[17ch] text-on-ink">
+          Transforming schools, colleges &amp; businesses through innovation.
+        </h1>
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mt-12 md:mt-14">
-            <div className="lg:col-start-7 lg:col-span-5">
-              <p
-                className="u-measure text-fg-muted text-body-lg h-enter"
-                style={{ ["--d" as string]: "280ms" }}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mt-12 md:mt-14">
+          <div className="lg:col-start-7 lg:col-span-5">
+            <p className="u-measure text-on-ink-muted text-body-lg">
+              Krinly Technologies builds innovation labs and industry programs
+              that make institutions future-ready, and engineers the digital
+              products that back them.
+            </p>
+
+            <div className="mt-9 flex flex-wrap items-center gap-x-8 gap-y-4">
+              <Link
+                href="/contact"
+                className="group u-label bg-paper text-ink pl-7 pr-6 py-4 hover:bg-accent hover:text-on-ink transition-colors duration-[var(--duration-micro)] inline-flex items-center gap-3"
               >
-                Krinly Technologies builds innovation labs and industry programs
-                that make institutions future-ready, and engineers the digital
-                products that back them.
-              </p>
-
-              <div
-                className="mt-9 flex flex-wrap items-center gap-x-8 gap-y-4 h-enter"
-                style={{ ["--d" as string]: "380ms" }}
+                Request a meeting
+                <span className="transition-transform duration-[var(--duration-micro)] group-hover:translate-x-1">
+                  →
+                </span>
+              </Link>
+              <Link
+                href="/innovation-labs"
+                className="group u-label text-on-ink-muted hover:text-on-ink transition-colors duration-[var(--duration-micro)]"
               >
-                <Link
-                  href="/contact"
-                  className="group u-label bg-ink text-on-ink pl-7 pr-6 py-4 hover:bg-accent transition-colors duration-[var(--duration-micro)] inline-flex items-center gap-3"
-                >
-                  Request a meeting
-                  <span className="transition-transform duration-[var(--duration-micro)] group-hover:translate-x-1">
-                    →
-                  </span>
-                </Link>
-                <Link
-                  href="/innovation-labs"
-                  className="group u-label text-fg-muted hover:text-fg transition-colors duration-[var(--duration-micro)]"
-                >
-                  <span className="u-sweep pb-1.5">See the programs</span>
-                </Link>
-              </div>
-
-              {business.credibility.msmeRegistered && (
-                <p
-                  className="u-label-sm text-fg-subtle mt-10 h-enter"
-                  style={{ ["--d" as string]: "480ms" }}
-                >
-                  <span className="text-accent">◆</span> Government of India ·
-                  MSME registered
-                  {business.credibility.udyamNumber
-                    ? ` · ${business.credibility.udyamNumber}`
-                    : ""}
-                </p>
-              )}
+                <span className="u-sweep pb-1.5">See the programs</span>
+              </Link>
             </div>
+
+            {business.credibility.msmeRegistered && (
+              <p className="u-label-sm text-on-ink-subtle mt-10">
+                <span className="text-accent-bright">◆</span> Government of
+                India · MSME registered
+                {business.credibility.udyamNumber
+                  ? ` · ${business.credibility.udyamNumber}`
+                  : ""}
+              </p>
+            )}
           </div>
         </div>
-      </section>
+      </VideoHero>
 
       {/* ==================================================================
           AUDIENCE ROUTER, institutions first. The visitor self-selects and

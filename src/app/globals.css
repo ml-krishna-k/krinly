@@ -48,6 +48,9 @@
      engineering, deliberately not the neon indigo/violet that signals SaaS. */
   --color-accent: #2249d6;
   --color-accent-hover: #1a37a6;
+  /* Lighter cobalt for accent text on dark/video surfaces, where the deep
+     accent loses contrast against near-black. */
+  --color-accent-bright: #6f8cff;
   /* Very low-opacity accent for technical grid lines and blueprint fills. */
   --color-grid: color-mix(in srgb, var(--color-accent) 9%, transparent);
 
@@ -392,6 +395,58 @@ p {
   right: 0;
   border-bottom: 1.5px solid;
   border-right: 1.5px solid;
+}
+
+/* Mask fade applied to the ELEMENT itself. Safe only on content-less decorative
+   overlays (e.g. the grid layer of a video hero), where masking the element
+   does not hide any real content. */
+.u-mask-fade {
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 42%, transparent 90%);
+  mask-image: linear-gradient(to bottom, #000 0%, #000 42%, transparent 90%);
+}
+
+/* ============================================================================
+   HERO VIDEO BACKGROUND
+   ----------------------------------------------------------------------------
+   The poster paints immediately (no JS, no layout shift). The video, when it is
+   loaded on a capable device, fades in over the poster. Everything is absolutely
+   positioned so it never affects document flow.
+   ========================================================================== */
+
+.hero-video {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: var(--color-ink); /* base colour before the poster paints */
+}
+
+.hero-video__poster,
+.hero-video__el {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* The video starts transparent and fades in once it is playable. Poster sits
+   underneath, so there is never a blank frame. */
+.hero-video__el {
+  opacity: 0;
+  transition: opacity 700ms var(--ease-out-expo);
+  will-change: opacity;
+}
+.hero-video__el.is-loaded {
+  opacity: 1;
+}
+
+/* Reduced motion: the video is never mounted by the component, but as a
+   defensive belt-and-braces the element is hidden here too, so only the poster
+   is ever shown. */
+@media (prefers-reduced-motion: reduce) {
+  .hero-video__el {
+    display: none !important;
+  }
 }
 
 /* ============================================================================

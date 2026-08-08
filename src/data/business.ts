@@ -49,13 +49,13 @@ export const business = {
     phoneRaw: "919360113501",
 
     /**
-     * PLACEHOLDER, REPLACE BEFORE LAUNCH.
-     * A domain address (e.g. krishna@krinly.com) reads materially more credible
-     * to an institutional decision-maker than a free-mail address. Changing
-     * this one line updates every mailto, the schema, and the footer.
+     * The business contact address, owner-provided. A domain address on the
+     * eventual krinly domain would read a notch more credible to an
+     * institutional buyer, but this is the live address now. Changing this one
+     * line updates every mailto, the schema, and the footer.
      */
-    email: "kkrishnarajr@gmail.com",
-    emailIsPlaceholder: true,
+    email: "krinlytechnologies@gmail.com",
+    emailIsPlaceholder: false,
 
     /** INFERRED, WhatsApp is active on this number across the portfolio. */
     whatsapp: true,
@@ -71,6 +71,14 @@ export const business = {
     instagram: "",
     github: "",
   },
+
+  /**
+   * Enquiry form delivery. NO DATABASE IS NEEDED for a contact form.
+   * The Web3Forms access key is configured via the environment variable
+   * NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY (see .env). When set, submissions are
+   * emailed to the business inbox; when unset, the form falls back to composing
+   * a WhatsApp message so it never silently fails.
+   */
 
   /**
    * INFERRED, Chennai / Tamil Nadu, from the portfolio's geography. Stated as

@@ -6,14 +6,22 @@ import { business } from "@/data/business";
 /**
  * Enquiry form, institutional register.
  *
- * There is no form backend configured yet, and the site does not pretend
- * otherwise, a form that silently discards submissions is the worst defect a
- * conversion site can ship. Until FORM_ENDPOINT is set, submitting composes the
- * enquiry into a WhatsApp message on the real number, which actually delivers.
- * Email is offered alongside. To switch to a real backend later, set
- * FORM_ENDPOINT and nothing else changes.
+ * The form never silently discards a submission, the worst defect a conversion
+ * site can ship. Two delivery paths, chosen automatically:
+ *
+ *   1. If a Web3Forms key is set (business.forms.web3formsKey), the submission
+ *      is POSTed to Web3Forms, which emails it to the business inbox. No server,
+ *      no database — just an email. This is the recommended production path.
+ *   2. Otherwise it composes the enquiry into a WhatsApp message on the business
+ *      number, which delivers immediately. This is the honest fallback so the
+ *      form works today even before the key is pasted in.
  */
-const FORM_ENDPOINT = "" as string; // TODO: point at a form service or route handler
+/**
+ * Web3Forms access key, read from the environment. NEXT_PUBLIC_ is correct here:
+ * this key is a public, client-side submission key by design (it only lets a
+ * submission be emailed to the address it is bound to). Inlined at build time.
+ */
+const WEB3FORMS_KEY = process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY ?? "";
 
 const INTERESTS = [
   "Schools: Innovation Lab program",
@@ -28,27 +36,43 @@ const labelCls = "u-label-sm text-on-ink-subtle block mb-2";
 
 export function EnquiryForm() {
   const [sending, setSending] = useState(false);
+  const [status, setStatus] = useState<"idle" | "sent" | "error">("idle");
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const form = e.currentTarget;
     const data = Object.fromEntries(new FormData(form)) as Record<string, string>;
 
-    if (FORM_ENDPOINT) {
+    // Path 1: Web3Forms (emails the submission to the business inbox).
+    if (WEB3FORMS_KEY) {
       setSending(true);
+      setStatus("idle");
       try {
-        await fetch(FORM_ENDPOINT, {
+        const res = await fetch("https://api.web3forms.com/submit", {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(data),
+          headers: { "Content-Type": "application/json", Accept: "application/json" },
+          body: JSON.stringify({
+            access_key: WEB3FORMS_KEY,
+            subject: `New enquiry — ${business.name}`,
+            from_name: data.name || "Website enquiry",
+            ...data,
+          }),
         });
-        form.reset();
+        if (res.ok) {
+          form.reset();
+          setStatus("sent");
+        } else {
+          setStatus("error");
+        }
+      } catch {
+        setStatus("error");
       } finally {
         setSending(false);
       }
       return;
     }
 
+    // Path 2: WhatsApp fallback (delivers today, no backend).
     const message = [
       `New enquiry, ${business.name}`,
       "",
@@ -66,6 +90,19 @@ export function EnquiryForm() {
       `https://wa.me/${business.contact.phoneRaw}?text=${encodeURIComponent(message)}`,
       "_blank",
       "noopener,noreferrer",
+    );
+  }
+
+  // Success state — a submission must be acknowledged, not vanish.
+  if (status === "sent") {
+    return (
+      <div className="border border-edge-on-ink p-8 lg:p-10">
+        <p className="u-spec mb-4">Received</p>
+        <p className="text-on-ink text-body-lg max-w-[42ch]">
+          Thanks, your enquiry is in. {business.founder} will reply to you
+          directly, usually within a day.
+        </p>
+      </div>
     );
   }
 
@@ -152,6 +189,12 @@ export function EnquiryForm() {
           </a>
         </p>
       </div>
+
+      {status === "error" && (
+        <p className="sm:col-span-2 u-label-sm text-accent" role="alert">
+          Something went wrong sending that. Please email or WhatsApp us instead.
+        </p>
+      )}
     </form>
   );
 }

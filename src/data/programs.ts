@@ -28,6 +28,18 @@ export interface ProgramTrack {
   modules: ProgramModule[];
   /** The first-mover line. Frames early adoption as the institution's edge. */
   urgency: string;
+  /**
+   * Hero background video (WebM preferred, MP4 fallback) plus its poster.
+   * `layout` picks the hero treatment: "cover" (full-bleed, for landscape
+   * footage) or "split" (video panel right, text left, for portrait footage
+   * that cover would over-enlarge).
+   */
+  media: {
+    poster: string;
+    mp4: string;
+    webm?: string;
+    layout?: "cover" | "split";
+  };
 }
 
 export const programs: ProgramTrack[] = [
@@ -73,6 +85,12 @@ export const programs: ProgramTrack[] = [
     ],
     urgency:
       "We partner with a small number of schools at a time. The first in a city to run a real innovation lab becomes the one others are measured against.",
+    media: {
+      poster: "/school-poster.webp",
+      webm: "/school_student.webm",
+      mp4: "/school_student.mp4",
+      layout: "split", // portrait footage — keep it on the right, text on the left
+    },
   },
   {
     slug: "colleges",
@@ -116,6 +134,11 @@ export const programs: ProgramTrack[] = [
     ],
     urgency:
       "Placement outcomes are the number colleges compete on. Partnering early means your department sets the benchmark before it becomes the baseline.",
+    media: {
+      poster: "/college-poster.webp",
+      webm: "/college_student.webm",
+      mp4: "/college_student.mp4",
+    },
   },
 ];
 

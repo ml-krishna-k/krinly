@@ -1,8 +1,14 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { business } from "@/data/business";
+
+/** Routes whose hero is a dark video background — the nav sits over dark there
+ *  until it gains its solid paper background on scroll. */
+const DARK_HERO_ROUTES = new Set(["/", "/schools", "/colleges"]);
 
 /**
  * Institutional navigation. Two program tracks (Schools, Colleges) sit beside
@@ -27,19 +33,34 @@ const LINKS = [
 /** The wordmark lockup, reused in the header and the mobile overlay. */
 function Wordmark({ onDark = false }: { onDark?: boolean }) {
   return (
-    <span className="inline-flex items-baseline gap-2">
-      <span
-        className={`text-[0.95rem] font-semibold tracking-[-0.01em] ${
-          onDark ? "text-on-ink" : "text-fg"
-        }`}
-      >
-        {business.shortName}
-        <span className="text-accent">.</span>
-      </span>
-      <span
-        className={`u-label-sm ${onDark ? "text-on-ink-subtle" : "text-fg-subtle"}`}
-      >
-        Technologies
+    <span className="inline-flex items-center gap-2.5">
+      {/* Raster mark on light surfaces only. Its background is near-white, so on
+          the dark overlay it would render as a light box — there we fall back to
+          the text lockup, which flips to light. */}
+      {!onDark && (
+        <Image
+          src="/logo-mark.webp"
+          alt=""
+          width={30}
+          height={30}
+          priority
+          className="h-[26px] w-auto"
+        />
+      )}
+      <span className="inline-flex items-baseline gap-2">
+        <span
+          className={`text-[0.95rem] font-semibold tracking-[-0.01em] ${
+            onDark ? "text-on-ink" : "text-fg"
+          }`}
+        >
+          {business.shortName}
+          <span className="text-accent">.</span>
+        </span>
+        <span
+          className={`u-label-sm ${onDark ? "text-on-ink-subtle" : "text-fg-subtle"}`}
+        >
+          Technologies
+        </span>
       </span>
     </span>
   );
@@ -49,6 +70,13 @@ export function Nav() {
   const [hidden, setHidden] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const pathname = usePathname();
+
+  // Use light nav treatment when sitting over a dark video hero (top of a
+  // dark-hero route) or when the dark mobile overlay is open. Once scrolled, the
+  // nav gains its paper background and reverts to dark text everywhere.
+  const light =
+    menuOpen || (DARK_HERO_ROUTES.has(pathname) && !scrolled);
 
   useEffect(() => {
     let lastY = window.scrollY;
@@ -109,7 +137,7 @@ export function Nav() {
             onClick={() => setMenuOpen(false)}
             className="hover:opacity-70 transition-opacity duration-[var(--duration-micro)]"
           >
-            <Wordmark onDark={menuOpen} />
+            <Wordmark onDark={light} />
           </Link>
 
           <div className="hidden lg:flex items-center gap-8">
@@ -117,14 +145,24 @@ export function Nav() {
               <Link
                 key={l.href}
                 href={l.href}
-                className="u-label text-fg-muted hover:text-fg transition-colors duration-[var(--duration-micro)]"
+                className={[
+                  "u-label transition-colors duration-[var(--duration-micro)]",
+                  light
+                    ? "text-on-ink-muted hover:text-on-ink"
+                    : "text-fg-muted hover:text-fg",
+                ].join(" ")}
               >
                 {l.label}
               </Link>
             ))}
             <Link
               href="/contact"
-              className="u-label bg-ink text-on-ink px-5 py-2.5 hover:bg-accent transition-colors duration-[var(--duration-micro)]"
+              className={[
+                "u-label px-5 py-2.5 transition-colors duration-[var(--duration-micro)]",
+                light
+                  ? "bg-paper text-ink hover:bg-accent hover:text-on-ink"
+                  : "bg-ink text-on-ink hover:bg-accent",
+              ].join(" ")}
             >
               Request a meeting
             </Link>
@@ -137,7 +175,7 @@ export function Nav() {
             aria-controls="mobile-menu"
             className={[
               "lg:hidden u-label py-2 -mr-2 px-2 transition-colors duration-[var(--duration-micro)]",
-              menuOpen ? "text-on-ink" : "text-fg",
+              light ? "text-on-ink" : "text-fg",
             ].join(" ")}
           >
             {menuOpen ? "Close" : "Menu"}

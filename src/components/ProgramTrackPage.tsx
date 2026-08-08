@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { ProgramTrack } from "@/data/programs";
 import { programs } from "@/data/programs";
+import { VideoHero } from "@/components/VideoHero";
 
 /**
  * Shared layout for the two institutional program tracks (Schools, Colleges).
@@ -10,28 +11,42 @@ import { programs } from "@/data/programs";
  */
 export function ProgramTrackPage({ track }: { track: ProgramTrack }) {
   const other = programs.find((p) => p.slug !== track.slug)!;
+  const isSplit = track.media.layout === "split";
 
   return (
     <main id="main" className="flex-1">
-      {/* Hero */}
-      <section className="u-grid u-grid-fade px-6 md:px-10 lg:px-16 pt-28 md:pt-36 pb-16 md:pb-20">
-        <p className="u-spec mb-8 h-enter">{track.audience}</p>
-        <h1 className="u-display-lg max-w-[18ch] h-mask" style={{ ["--d" as string]: "100ms" }}>
+      {/* Hero, cinematic video background for the track (students building).
+          Split layout for portrait footage keeps the video on the right and the
+          text on the left; cover is used for landscape footage. */}
+      <VideoHero
+        poster={track.media.poster}
+        webm={track.media.webm}
+        mp4={track.media.mp4}
+        variant={track.media.layout ?? "cover"}
+        className={
+          track.media.layout === "split" ? "" : "min-h-[80vh] flex items-center"
+        }
+      >
+        <p className="u-spec !text-accent-bright mb-8">{track.audience}</p>
+        {/* In split mode the headline shares the row with the video, so it is
+            sized down to fit the narrower column with the intro and CTA. */}
+        <h1
+          className={`u-display-lg max-w-[16ch] text-on-ink ${
+            isSplit ? "!text-[clamp(1.875rem,3vw,3rem)]" : ""
+          }`}
+        >
           {track.headline}
         </h1>
-
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mt-12">
-          <div className="lg:col-start-7 lg:col-span-5">
-            <p className="u-measure text-fg-muted text-body-lg">{track.intro}</p>
-            <Link
-              href="/contact"
-              className="u-label inline-block mt-8 bg-ink text-on-ink px-7 py-4 hover:bg-accent transition-colors duration-[var(--duration-micro)]"
-            >
-              Request a meeting
-            </Link>
-          </div>
+        <div className="max-w-[48ch] mt-7">
+          <p className="text-on-ink-muted text-body-lg">{track.intro}</p>
+          <Link
+            href="/contact"
+            className="u-label inline-block mt-8 bg-paper text-ink px-7 py-4 hover:bg-accent hover:text-on-ink transition-colors duration-[var(--duration-micro)]"
+          >
+            Request a meeting
+          </Link>
         </div>
-      </section>
+      </VideoHero>
 
       {/* Outcomes, what the decision-maker is buying */}
       <section className="px-6 md:px-10 lg:px-16 py-[var(--space-section)]">
