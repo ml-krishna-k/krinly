@@ -34,7 +34,6 @@ export interface HeroVideoProps {
 }
 
 const DESKTOP_QUERY = "(min-width: 768px)";
-const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
 
 export function HeroVideo({
   poster,
@@ -43,7 +42,10 @@ export function HeroVideo({
   position = "center",
 }: HeroVideoProps) {
   const videoRef = useRef<HTMLVideoElement | null>(null);
-  // Whether the video should be loaded at all (desktop + motion allowed).
+  // Whether the video should be loaded at all (desktop width). The hero video
+  // is a muted, ambient loop the owner wants shown, so it plays regardless of
+  // prefers-reduced-motion; the mobile gate (below) is about bandwidth, not
+  // motion, and still applies.
   const [enabled, setEnabled] = useState(false);
   // Whether the video has become playable, and should fade in.
   const [loaded, setLoaded] = useState(false);
@@ -51,16 +53,13 @@ export function HeroVideo({
   // Decide whether to load the video, and keep the decision live.
   useEffect(() => {
     const desktop = window.matchMedia(DESKTOP_QUERY);
-    const reduced = window.matchMedia(REDUCED_MOTION_QUERY);
 
-    const evaluate = () => setEnabled(desktop.matches && !reduced.matches);
+    const evaluate = () => setEnabled(desktop.matches);
     evaluate();
 
     desktop.addEventListener("change", evaluate);
-    reduced.addEventListener("change", evaluate);
     return () => {
       desktop.removeEventListener("change", evaluate);
-      reduced.removeEventListener("change", evaluate);
     };
   }, []);
 

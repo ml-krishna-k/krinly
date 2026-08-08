@@ -177,20 +177,22 @@ export default function Home() {
       </section>
 
       {/* ==================================================================
-          OUTCOME STATEMENT, the messaging pivot, stated plainly.
+          OUTCOME STATEMENT, cinematic video band behind the messaging pivot.
+          Video is swappable: change the three sources below to any clip.
           ================================================================== */}
-      <section className="px-6 md:px-10 lg:px-16 py-[var(--space-section-lg)]">
+      <VideoHero
+        poster="/college-poster.webp"
+        webm="/college_student.webm"
+        mp4="/college_student.mp4"
+      >
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-          <p className="u-spec lg:col-span-3">Why it works</p>
-          <h2
-            className="lg:col-span-9 u-display-sm !text-[clamp(1.75rem,3.4vw,3rem)] max-w-[22ch]"
-            data-reveal
-          >
+          <p className="u-spec !text-accent-bright lg:col-span-3">Why it works</p>
+          <h2 className="lg:col-span-9 u-display-sm !text-[clamp(1.75rem,3.4vw,3rem)] max-w-[24ch] text-on-ink">
             We don&rsquo;t teach coding. Students build engineering products, and
             we can teach that because we ship it.
           </h2>
         </div>
-      </section>
+      </VideoHero>
 
       {/* ==================================================================
           PROOF, the products Krinly has actually engineered.

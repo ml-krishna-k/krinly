@@ -440,14 +440,9 @@ p {
   opacity: 1;
 }
 
-/* Reduced motion: the video is never mounted by the component, but as a
-   defensive belt-and-braces the element is hidden here too, so only the poster
-   is ever shown. */
-@media (prefers-reduced-motion: reduce) {
-  .hero-video__el {
-    display: none !important;
-  }
-}
+/* The hero video is a muted ambient loop the owner wants shown, so it is not
+   suppressed under reduced motion. (Mobile still gets the poster only, gated in
+   the component for bandwidth.) */
 
 /* ============================================================================
    ACCESSIBILITY

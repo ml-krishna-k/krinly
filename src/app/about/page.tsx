@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { business } from "@/data/business";
 
 export const metadata: Metadata = {
@@ -43,16 +44,35 @@ export default function About() {
 
       {/* Founder */}
       <section className="px-6 md:px-10 lg:px-16 pb-[var(--space-section-lg)]">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 border-t border-edge pt-10">
-          <h2 className="u-label text-fg-subtle lg:col-span-4">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 border-t border-edge pt-10">
+          <h2 className="u-label text-fg-subtle lg:col-span-12">
             Who you work with
           </h2>
-          <div className="lg:col-start-6 lg:col-span-7">
+
+          {/* Founder portrait */}
+          <div className="lg:col-span-4">
+            <div
+              data-reveal="mask"
+              className="relative aspect-[2/3] bg-ink overflow-hidden max-w-[22rem] lg:max-w-none"
+            >
+              <Image
+                src="/founder.webp"
+                alt={`${business.founder}, ${business.founderTitle} of ${business.name}`}
+                fill
+                sizes="(max-width: 1024px) 80vw, 30vw"
+                className="object-cover object-top"
+              />
+            </div>
+            <p className="u-label-sm text-fg-subtle mt-4">
+              {business.founder} · {business.founderTitle}
+            </p>
+          </div>
+
+          {/* Bio */}
+          <div className="lg:col-start-6 lg:col-span-7 lg:pt-2">
             <p className="u-display-sm !text-[clamp(1.5rem,3vw,2.5rem)] max-w-[20ch]">
               {business.founder}, {business.founderTitle}, {business.name}
             </p>
-            {/* TODO (owner input): a founder photograph belongs here, it is the
-                highest-value single trust asset the About page can carry. */}
             <div className="mt-8 space-y-5">
               <p className="u-measure text-fg-muted">
                 Krinly is founder-led, which means the person setting the
