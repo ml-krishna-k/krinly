@@ -3,18 +3,18 @@
 import { useEffect, useRef, useState } from "react";
 
 /**
- * HeroVideo — a background video that never costs the page anything it doesn't
- * have to.
+ * HeroVideo — a background video that never costs the page more than it should.
  *
  * Behaviour:
  *  - The poster paints immediately as a plain <img> (no JS, no layout shift).
- *  - The <video> is only MOUNTED — and therefore only downloaded — on a
- *    desktop-width viewport with motion allowed. On mobile or under
- *    prefers-reduced-motion the poster is all that ever loads.
+ *  - The <video> mounts on every screen, but chooses a source by viewport: a
+ *    light, small mobile encode below the tablet breakpoint, the full-quality
+ *    source above it. Mobile therefore gets motion without the desktop payload.
  *  - preload="metadata" keeps the initial request tiny; the video fades in only
- *    once it is actually playable (loadeddata / canplaythrough).
- *  - Every listener is removed on cleanup, and the media-query listeners are
- *    live, so rotating a tablet or toggling reduced-motion re-evaluates.
+ *    once frames are genuinely advancing (timeupdate), so a blocked autoplay
+ *    never leaves a frozen frame — the poster stays instead.
+ *  - Every listener is cleaned up; the media-query listener is live, so rotating
+ *    or resizing across the breakpoint re-picks the right source.
  *
  * It is purely decorative, so the whole thing is aria-hidden and not focusable.
  */
@@ -22,10 +22,14 @@ import { useEffect, useRef, useState } from "react";
 export interface HeroVideoProps {
   /** Poster image shown immediately and as the video's own poster attribute. */
   poster: string;
-  /** MP4 source (H.264) — the universal fallback. */
+  /** Full-quality MP4 source (H.264) — the universal desktop fallback. */
   mp4: string;
-  /** Optional WebM source (VP9) — preferred when the browser supports it. */
+  /** Optional full-quality WebM source (VP9) — preferred on desktop. */
   webm?: string;
+  /** Optional light MP4 for mobile (< 768px). Falls back to `mp4` if absent. */
+  mobileMp4?: string;
+  /** Optional light WebM for mobile (< 768px). Falls back to `webm` if absent. */
+  mobileWebm?: string;
   /**
    * CSS object-position for both poster and video, e.g. "center" or
    * "right center". Lets a subject be kept in frame when cover crops.
@@ -39,49 +43,48 @@ export function HeroVideo({
   poster,
   mp4,
   webm,
+  mobileMp4,
+  mobileWebm,
   position = "center",
 }: HeroVideoProps) {
   const videoRef = useRef<HTMLVideoElement | null>(null);
-  // Whether the video should be loaded at all (desktop width). The hero video
-  // is a muted, ambient loop the owner wants shown, so it plays regardless of
-  // prefers-reduced-motion; the mobile gate (below) is about bandwidth, not
-  // motion, and still applies.
-  const [enabled, setEnabled] = useState(false);
-  // Whether the video has become playable, and should fade in.
+  // The video only renders once the viewport has been measured client-side, so
+  // the correct (light mobile vs full desktop) source is chosen before load.
+  const [ready, setReady] = useState(false);
+  const [isDesktop, setIsDesktop] = useState(true);
+  // Whether frames are advancing, and the video should fade in over the poster.
   const [loaded, setLoaded] = useState(false);
 
-  // Decide whether to load the video, and keep the decision live.
   useEffect(() => {
-    const desktop = window.matchMedia(DESKTOP_QUERY);
-
-    const evaluate = () => setEnabled(desktop.matches);
-    evaluate();
-
-    desktop.addEventListener("change", evaluate);
-    return () => {
-      desktop.removeEventListener("change", evaluate);
+    const mq = window.matchMedia(DESKTOP_QUERY);
+    const evaluate = () => {
+      setIsDesktop(mq.matches);
+      setReady(true);
     };
+    evaluate();
+    mq.addEventListener("change", evaluate);
+    return () => mq.removeEventListener("change", evaluate);
   }, []);
 
-  // Wire up load/playback once the video is actually mounted.
+  // Pick sources by viewport. On mobile, WebM is only used if a light mobile
+  // WebM was supplied — it must never fall back to the heavy desktop WebM. The
+  // MP4 (small mobile encode) is the universal mobile path.
+  const webmSrc = isDesktop ? webm : mobileWebm;
+  const mp4Src = isDesktop ? mp4 : (mobileMp4 ?? mp4);
+
+  // Wire up playback. Re-runs when the source set changes (the <video> is keyed
+  // on viewport, so it remounts and this effect re-attaches to the new element).
   useEffect(() => {
-    if (!enabled) {
-      setLoaded(false);
-      return;
-    }
+    if (!ready) return;
+    setLoaded(false); // new source: wait until it actually plays to fade in
     const video = videoRef.current;
     if (!video) return;
 
-    // Guarantee muted before any play attempt. React does not reliably render
-    // the `muted` attribute, and un-muted autoplay is blocked everywhere.
+    // Guarantee muted before any play attempt — un-muted autoplay is blocked
+    // everywhere, and React does not reliably render the `muted` attribute.
     video.muted = true;
     video.defaultMuted = true;
 
-    // Fade in only once frames are genuinely advancing. `timeupdate` is the
-    // reliable signal for that — unlike `playing`, it cannot be missed by a
-    // late-attached listener, and unlike `canplaythrough` it never fades in a
-    // paused, frozen frame. If autoplay is blocked, the poster simply stays,
-    // which is the correct fallback.
     const reveal = () => setLoaded(true);
     const onTimeUpdate = () => {
       if (video.currentTime > 0) {
@@ -89,7 +92,6 @@ export function HeroVideo({
         video.removeEventListener("timeupdate", onTimeUpdate);
       }
     };
-
     const attemptPlay = () => {
       const result = video.play();
       if (result) result.catch(() => undefined);
@@ -100,11 +102,10 @@ export function HeroVideo({
     video.addEventListener("loadeddata", attemptPlay);
     video.addEventListener("canplay", attemptPlay);
     attemptPlay();
-    // If playback was already running before listeners attached, reflect it now.
     if (!video.paused && video.currentTime > 0) reveal();
 
     // Last resort: if autoplay was refused, the first user interaction is a
-    // valid gesture to start playback. One-shot, and cleaned up either way.
+    // valid gesture to start playback. One-shot, cleaned up either way.
     const onFirstGesture = () => attemptPlay();
     const gestureOpts: AddEventListenerOptions = { once: true, passive: true };
     window.addEventListener("pointerdown", onFirstGesture, gestureOpts);
@@ -120,7 +121,7 @@ export function HeroVideo({
       window.removeEventListener("touchstart", onFirstGesture);
       window.removeEventListener("keydown", onFirstGesture);
     };
-  }, [enabled]);
+  }, [ready, isDesktop]);
 
   return (
     <div className="hero-video" aria-hidden="true">
@@ -135,8 +136,9 @@ export function HeroVideo({
         style={{ objectPosition: position }}
       />
 
-      {enabled && (
+      {ready && (
         <video
+          key={isDesktop ? "desktop" : "mobile"}
           ref={videoRef}
           className={`hero-video__el${loaded ? " is-loaded" : ""}`}
           poster={poster}
@@ -148,8 +150,8 @@ export function HeroVideo({
           tabIndex={-1}
           style={{ objectPosition: position }}
         >
-          {webm ? <source src={webm} type="video/webm" /> : null}
-          <source src={mp4} type="video/mp4" />
+          {webmSrc ? <source src={webmSrc} type="video/webm" /> : null}
+          <source src={mp4Src} type="video/mp4" />
         </video>
       )}
     </div>

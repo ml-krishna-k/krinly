@@ -38,6 +38,8 @@ export interface ProgramTrack {
     poster: string;
     mp4: string;
     webm?: string;
+    /** Light MP4 encode used on mobile (< 768px). */
+    mobileMp4?: string;
     layout?: "cover" | "split";
   };
 }
@@ -89,6 +91,7 @@ export const programs: ProgramTrack[] = [
       poster: "/school-poster.webp",
       webm: "/school_student.webm",
       mp4: "/school_student.mp4",
+      mobileMp4: "/school_student-mobile.mp4",
       layout: "split", // portrait footage — keep it on the right, text on the left
     },
   },
@@ -138,6 +141,7 @@ export const programs: ProgramTrack[] = [
       poster: "/college-poster.webp",
       webm: "/college_student.webm",
       mp4: "/college_student.mp4",
+      mobileMp4: "/college_student-mobile.mp4",
     },
   },
 ];

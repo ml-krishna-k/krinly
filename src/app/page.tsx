@@ -53,6 +53,7 @@ export default function Home() {
         poster="/hero-poster.webp"
         webm="/hero.webm"
         mp4="/hero.mp4"
+        mobileMp4="/hero-mobile.mp4"
         overlay="light"
         className="min-h-[86vh] flex items-center"
       >
@@ -185,6 +186,7 @@ export default function Home() {
         poster="/college-poster.webp"
         webm="/college_student.webm"
         mp4="/college_student.mp4"
+        mobileMp4="/college_student-mobile.mp4"
       >
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           <p className="u-spec !text-accent-bright lg:col-span-3">Why it works</p>

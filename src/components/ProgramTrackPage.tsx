@@ -22,6 +22,7 @@ export function ProgramTrackPage({ track }: { track: ProgramTrack }) {
         poster={track.media.poster}
         webm={track.media.webm}
         mp4={track.media.mp4}
+        mobileMp4={track.media.mobileMp4}
         variant={track.media.layout ?? "cover"}
         className={
           track.media.layout === "split" ? "" : "min-h-[80vh] flex items-center"

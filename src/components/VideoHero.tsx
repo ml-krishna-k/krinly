@@ -37,12 +37,15 @@ export function VideoHero({
   poster,
   mp4,
   webm,
+  mobileMp4,
+  mobileWebm,
   position,
   variant = "cover",
   overlay = "medium",
   children,
   className = "",
 }: VideoHeroProps) {
+  const media = { poster, mp4, webm, mobileMp4, mobileWebm, position };
   if (variant === "split") {
     return (
       <section
@@ -67,7 +70,7 @@ export function VideoHero({
               a full-bleed cover would cause. A seam line and a light tint keep
               it consistent with the dark shell. */}
           <div className="order-1 md:order-2 relative min-h-[46vh] md:min-h-full border-b md:border-b-0 md:border-l border-edge-on-ink">
-            <HeroVideo poster={poster} mp4={mp4} webm={webm} position={position} />
+            <HeroVideo {...media} />
             <div aria-hidden className="absolute inset-0 bg-ink/25" />
             {/* Fade the inner edge into the dark content side. */}
             <div
@@ -86,7 +89,7 @@ export function VideoHero({
       className={`relative isolate overflow-hidden bg-ink text-on-ink ${className}`}
     >
       {/* 1. Video + poster */}
-      <HeroVideo poster={poster} mp4={mp4} webm={webm} position={position} />
+      <HeroVideo {...media} />
 
       {/* 2. Readability overlay. "light" keeps the middle mostly clear so dark
           footage shows through, and reserves the darkening for the top (nav)
