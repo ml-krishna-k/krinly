@@ -22,6 +22,13 @@ interface VideoHeroProps extends HeroVideoProps {
   children: ReactNode;
   className?: string;
   variant?: "cover" | "split";
+  /**
+   * Darkness of the readability overlay (cover variant only).
+   * "medium" (default) suits bright footage where text needs the contrast;
+   * "light" lets dark footage show through while keeping text legible via a
+   * top/bottom gradient.
+   */
+  overlay?: "medium" | "light";
 }
 
 const PAD = "px-6 md:px-10 lg:px-16";
@@ -32,6 +39,7 @@ export function VideoHero({
   webm,
   position,
   variant = "cover",
+  overlay = "medium",
   children,
   className = "",
 }: VideoHeroProps) {
@@ -80,13 +88,28 @@ export function VideoHero({
       {/* 1. Video + poster */}
       <HeroVideo poster={poster} mp4={mp4} webm={webm} position={position} />
 
-      {/* 2. Dark overlay — uniform 60% base, reinforced at top (nav) and bottom
-          (CTA / section edge). Keeps text clean on any frame. */}
-      <div aria-hidden className="absolute inset-0 z-10 bg-ink/60" />
-      <div
-        aria-hidden
-        className="absolute inset-0 z-10 bg-gradient-to-b from-ink/55 via-transparent to-ink/35"
-      />
+      {/* 2. Readability overlay. "light" keeps the middle mostly clear so dark
+          footage shows through, and reserves the darkening for the top (nav)
+          and bottom (CTA) where the smaller text sits; the large headline stays
+          legible over the lighter middle on its own. "medium" is a stronger,
+          more uniform wash for bright footage. */}
+      {overlay === "light" ? (
+        <>
+          <div aria-hidden className="absolute inset-0 z-10 bg-ink/30" />
+          <div
+            aria-hidden
+            className="absolute inset-0 z-10 bg-gradient-to-b from-ink/45 via-ink/10 to-ink/55"
+          />
+        </>
+      ) : (
+        <>
+          <div aria-hidden className="absolute inset-0 z-10 bg-ink/60" />
+          <div
+            aria-hidden
+            className="absolute inset-0 z-10 bg-gradient-to-b from-ink/55 via-transparent to-ink/35"
+          />
+        </>
+      )}
 
       {/* 3. Grid overlay — blueprint texture, fading down. */}
       <div aria-hidden className="absolute inset-0 z-20 u-grid-on-ink u-mask-fade" />

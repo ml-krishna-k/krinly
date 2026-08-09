@@ -118,6 +118,22 @@
 }
 
 /* ============================================================================
+   MOBILE TUNING
+   ----------------------------------------------------------------------------
+   Below the tablet breakpoint: tighten the vertical rhythm so sections feel
+   composed rather than stretched on a small screen, and scale the hero display
+   down so long headline words ("Transforming") never clip on narrow devices.
+   Desktop values are untouched.
+   ========================================================================== */
+@media (max-width: 767px) {
+  :root {
+    --space-section: 4rem;
+    --space-section-lg: 5.5rem;
+    --text-display-xl: clamp(2.5rem, 12vw, 3.5rem);
+  }
+}
+
+/* ============================================================================
    BASE
    ========================================================================== */
 

@@ -53,6 +53,7 @@ export default function Home() {
         poster="/hero-poster.webp"
         webm="/hero.webm"
         mp4="/hero.mp4"
+        overlay="light"
         className="min-h-[86vh] flex items-center"
       >
         <p className="u-spec !text-accent-bright mb-10 md:mb-12">
@@ -112,7 +113,7 @@ export default function Home() {
             <li key={a.href} className="border-b md:border-b-0 md:border-r border-edge last:border-r-0">
               <Link
                 href={a.href}
-                className="group relative flex flex-col justify-between h-full min-h-[14rem] py-8 md:px-8 md:first:pl-0 overflow-hidden"
+                className="group relative flex flex-col justify-between h-full min-h-[10rem] md:min-h-[14rem] py-7 md:py-8 md:px-8 md:first:pl-0 overflow-hidden"
               >
                 {/* Ghost index — a faint plate number, engineering-drawing style */}
                 <span
