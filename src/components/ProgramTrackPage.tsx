@@ -58,12 +58,14 @@ export function ProgramTrackPage({ track }: { track: ProgramTrack }) {
               <li
                 key={o}
                 data-reveal
-                className="flex gap-6 border-b border-edge py-6 first:border-t"
+                className="flex gap-5 md:gap-8 border-b border-edge py-7 md:py-9 first:border-t"
               >
-                <span className="u-spec pt-1 shrink-0 tabular-nums">
+                <span className="u-spec pt-2 shrink-0 tabular-nums">
                   {String(i + 1).padStart(2, "0")}
                 </span>
-                <span className="text-[1.125rem] leading-snug">{o}</span>
+                <span className="u-display-sm !text-[clamp(1.5rem,2.8vw,2.25rem)] !leading-[1.15] font-medium">
+                  {o}
+                </span>
               </li>
             ))}
           </ul>
@@ -82,13 +84,13 @@ export function ProgramTrackPage({ track }: { track: ProgramTrack }) {
               data-reveal
               className="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-8 border-b border-edge py-8 lg:py-10 first:border-t"
             >
-              <span className="u-spec lg:col-span-1 tabular-nums">
+              <span className="u-spec lg:col-span-1 tabular-nums pt-2">
                 {String(i + 1).padStart(2, "0")}
               </span>
-              <h3 className="lg:col-span-4 u-display-sm !text-[clamp(1.375rem,2vw,1.875rem)]">
+              <h3 className="lg:col-span-4 u-display-sm !text-[clamp(1.75rem,2.8vw,2.5rem)]">
                 {m.title}
               </h3>
-              <p className="lg:col-start-6 lg:col-span-7 text-fg-muted max-w-[54ch]">
+              <p className="lg:col-start-6 lg:col-span-7 text-fg-muted text-body-lg md:!text-[1.25rem] !leading-[1.5] max-w-[52ch]">
                 {m.detail}
               </p>
             </div>
