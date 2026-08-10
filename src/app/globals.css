@@ -170,7 +170,7 @@ h1,
 h2,
 h3,
 h4 {
-  font-weight: 500;
+  font-weight: 700;
   letter-spacing: var(--tracking-display);
   line-height: var(--leading-display);
   text-wrap: balance;
@@ -178,6 +178,14 @@ h4 {
 
 p {
   text-wrap: pretty;
+}
+
+/* Highlighted headings: bold, and accent-coloured on light surfaces. All
+   heading levels are highlighted. Headings inside a dark/ink or video section
+   keep their light text (those sections carry the .bg-ink class), so contrast
+   is never lost. */
+section:not(.bg-ink) :is(h1, h2, h3, h4) {
+  color: var(--color-accent);
 }
 
 /* ============================================================================
@@ -188,28 +196,28 @@ p {
   font-size: var(--text-display-xl);
   line-height: var(--leading-display);
   letter-spacing: var(--tracking-display-tight);
-  font-weight: 500;
+  font-weight: 700;
 }
 
 .u-display-lg {
   font-size: var(--text-display-lg);
   line-height: var(--leading-display);
   letter-spacing: var(--tracking-display-tight);
-  font-weight: 500;
+  font-weight: 700;
 }
 
 .u-display-md {
   font-size: var(--text-display-md);
   line-height: var(--leading-display-loose);
   letter-spacing: var(--tracking-display);
-  font-weight: 500;
+  font-weight: 700;
 }
 
 .u-display-sm {
   font-size: var(--text-display-sm);
   line-height: var(--leading-display-loose);
   letter-spacing: var(--tracking-display);
-  font-weight: 500;
+  font-weight: 700;
 }
 
 /* The label tier carries a disproportionate amount of the "expensive"
@@ -459,6 +467,12 @@ p {
 /* The hero video is a muted ambient loop the owner wants shown, so it is not
    suppressed under reduced motion. (Mobile still gets the poster only, gated in
    the component for bandwidth.) */
+
+/* Monochrome dark treatment for the embedded map, so it fits the ink aesthetic
+   instead of reading as a bright default Google map. */
+.map-embed {
+  filter: grayscale(1) invert(0.9) contrast(0.88) brightness(0.95);
+}
 
 /* ============================================================================
    ACCESSIBILITY

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { business } from "@/data/business";
 import { EnquiryForm } from "@/components/EnquiryForm";
+import { MapEmbed } from "@/components/MapEmbed";
 
 export const metadata: Metadata = {
   title: "Request a meeting",
@@ -53,11 +54,13 @@ export default function Contact() {
                 </a>
               )}
             </div>
-            <p className="u-label-sm text-on-ink-subtle mt-10">
-              {business.location.city}, {business.location.country}
-            </p>
+            <p className="u-label-sm text-on-ink-subtle mt-10 mb-2">Office</p>
+            <address className="not-italic text-on-ink-muted text-body-sm max-w-[24ch]">
+              {business.location.street},<br />
+              {business.location.city} {business.location.postalCode}
+            </address>
             {business.credibility.msmeRegistered && (
-              <p className="u-label-sm text-on-ink-muted mt-3">
+              <p className="u-label-sm text-on-ink-muted mt-6">
                 <span className="text-accent">◆</span> MSME · Government of India
               </p>
             )}
@@ -67,6 +70,23 @@ export default function Contact() {
             <EnquiryForm />
           </div>
         </div>
+      </section>
+
+      {/* Find us */}
+      <section className="px-6 md:px-10 lg:px-16 py-[var(--space-section)]">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-end mb-8">
+          <div className="lg:col-span-6">
+            <p className="u-spec mb-6">Find us</p>
+            <h2 className="u-display-sm !text-[clamp(1.5rem,2.6vw,2.25rem)] max-w-[16ch]">
+              {business.location.street}
+            </h2>
+            <p className="text-fg-muted mt-3">
+              {business.location.city}, {business.location.region}{" "}
+              {business.location.postalCode}
+            </p>
+          </div>
+        </div>
+        <MapEmbed className="aspect-[16/10] md:aspect-[21/9] border border-edge" />
       </section>
     </main>
   );

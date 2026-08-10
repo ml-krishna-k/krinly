@@ -20,15 +20,11 @@ export const business = {
   /** Short wordmark for the nav/logo lockup. */
   shortName: "Krinly",
 
-  /** VERIFIED, provided in the brief. */
-  founder: "Krishna",
+  /** VERIFIED, provided by the owner. */
+  founder: "Krishnaraj",
 
-  /**
-   * PLACEHOLDER, needs the owner's confirmation.
-   * "Founder" is safe. A title implying a large org (CEO of a 40-person
-   * company) would imply headcount we cannot evidence.
-   */
-  founderTitle: "Founder",
+  /** VERIFIED, owner-specified title. */
+  founderTitle: "CEO & Founder",
 
   /**
    * The category line. This is the single most important string on the site:
@@ -85,9 +81,16 @@ export const business = {
    * a base, not an office. No invented street address.
    */
   location: {
+    /** VERIFIED, owner-provided street address. */
+    street: "4/204 Ellaiamman Koil 2nd Street, Neelankarai",
     city: "Chennai",
     region: "Tamil Nadu",
+    postalCode: "600115",
     country: "India",
+    full: "4/204 Ellaiamman Koil 2nd Street, Neelankarai, Chennai 600115",
+    /** Used to build a maps link / embed. */
+    mapQuery:
+      "4/204 Ellaiamman Koil 2nd Street, Neelankarai, Chennai 600115",
     line: "Chennai, India. Partnering with institutions across the country and abroad.",
   },
 

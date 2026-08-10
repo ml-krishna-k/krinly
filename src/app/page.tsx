@@ -6,6 +6,7 @@ import { business } from "@/data/business";
 import { WorkCard } from "@/components/WorkIndex";
 import { LabSchematic } from "@/components/Diagram";
 import { VideoHero } from "@/components/VideoHero";
+import { Testimonials } from "@/components/Testimonials";
 
 /**
  * Homepage, a persuasive sequence for an institutional decision-maker.
@@ -205,12 +206,12 @@ export default function Home() {
         className="px-6 md:px-10 lg:px-16 pb-[var(--space-section-lg)] scroll-mt-24"
       >
         <div className="flex items-baseline justify-between border-t border-edge pt-6 mb-16 md:mb-24">
-          <h2 className="u-label text-fg-subtle">Products we&rsquo;ve engineered</h2>
+          <h2 className="u-label text-fg-subtle">Our clients</h2>
           <Link
             href="/work"
             className="u-label-sm text-fg-subtle hover:text-accent transition-colors duration-[var(--duration-micro)]"
           >
-            All products →
+            All work →
           </Link>
         </div>
 
@@ -362,9 +363,22 @@ export default function Home() {
       </section>
 
       {/* ==================================================================
+          CLIENT FEEDBACK — swipeable carousel (placeholder content until real
+          quotes are supplied).
+          ================================================================== */}
+      <section className="bg-ink text-on-ink u-grid-on-ink px-6 md:px-10 lg:px-16 py-[var(--space-section-lg)]">
+        <p className="u-spec !text-accent-bright mb-12">Client feedback</p>
+        <div className="grid grid-cols-1 lg:grid-cols-12">
+          <div className="lg:col-span-10 lg:col-start-2">
+            <Testimonials />
+          </div>
+        </div>
+      </section>
+
+      {/* ==================================================================
           FINAL CTA BAND
           ================================================================== */}
-      <section className="px-6 md:px-10 lg:px-16 pb-[var(--space-section-lg)]">
+      <section className="px-6 md:px-10 lg:px-16 py-[var(--space-section-lg)]">
         <Link
           href="/contact"
           className="group block border-t border-edge pt-10 md:pt-14"

@@ -68,24 +68,28 @@ export default function About() {
             </p>
           </div>
 
-          {/* Bio */}
+          {/* Bio — about the founder, Krishnaraj. */}
           <div className="lg:col-start-6 lg:col-span-7 lg:pt-2">
-            <p className="u-display-sm !text-[clamp(1.5rem,3vw,2.5rem)] max-w-[20ch]">
-              {business.founder}, {business.founderTitle}, {business.name}
+            <p className="u-display-sm !text-[clamp(1.75rem,3.4vw,2.75rem)]">
+              {business.founder}
+            </p>
+            <p className="u-label text-accent mt-3">
+              {business.founderTitle}, {business.name}
             </p>
             <div className="mt-8 space-y-5">
               <p className="u-measure text-fg-muted">
-                Krinly is founder-led, which means the person setting the
-                strategy is the person designing the program and writing the
-                code. For an institution that means direct involvement, one point
-                of accountability, and decisions in days rather than through
-                layers.
+                Krishnaraj is a technologist, entrepreneur, and the CTO of
+                Enervara, driven by one belief: that innovation should solve real
+                problems. His journey spans full-stack engineering, automation,
+                hardware development, and generative AI, working with startups
+                and businesses to build impactful products.
               </p>
               <p className="u-measure text-fg-muted">
-                The engineering runs deep, generative AI and machine learning,
-                retrieval and agentic systems, voice interfaces, full-stack and
-                embedded product work. Most programs don&rsquo;t need all of it,
-                but it sets the ceiling on what Krinly can build and teach.
+                Along the way, he has competed in and won multiple hackathons,
+                turning ideas into practical solutions. That same passion led to
+                the creation of Krinly, a platform dedicated to helping schools,
+                colleges, and businesses embrace innovation through hands-on
+                learning and future-ready technology.
               </p>
             </div>
           </div>

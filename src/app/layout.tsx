@@ -92,8 +92,10 @@ const schema = {
   ],
   address: {
     "@type": "PostalAddress",
+    streetAddress: business.location.street,
     addressLocality: business.location.city,
     addressRegion: business.location.region,
+    postalCode: business.location.postalCode,
     addressCountry: "IN",
   },
   areaServed: "IN",
